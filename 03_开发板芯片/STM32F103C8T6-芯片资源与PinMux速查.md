@@ -1,7 +1,7 @@
 ---
 类型: 板卡
 状态: 进行中
-标签: [STM32, STM32F103C8T6, 引脚, PinMux, 芯片资源]
+标签: [stm32, STM32F103C8T6, 引脚, PinMux, 芯片资源]
 型号: STM32F103C8T6
 封装: LQFP48 (7×7mm)
 平台: [STM32]
