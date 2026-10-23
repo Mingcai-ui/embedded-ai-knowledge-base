@@ -1,16 +1,14 @@
 ---
-type: 芯片资源档案
-status: 草案
-trust_level: L0
-platform: [STM32]
-mcu: [STM32F103C8T6]
-packages: [LQFP48 (7×7mm)]
-source_type: ST 官方参考手册 + 官方数据手册
-source_path: "h:/Projects/嵌入式仓库笔记/嵌入式AI知识库/嵌入式AI知识库/00_收件箱/STM32F10xxx参考手册（中文）.pdf"
-source_version: RM0008 参考手册中文第10版（对应英文版 Rev 10） + DS5319 数据手册 Rev 20
-created: 2026-09-02
-related:
-  - "[[STM32F103C8T6]]"
+类型: 板卡
+状态: 进行中
+标签: [STM32, STM32F103C8T6, 引脚, PinMux, 芯片资源]
+型号: STM32F103C8T6
+封装: LQFP48 (7×7mm)
+平台: [STM32]
+可信度: L0
+来源类型: ST 官方参考手册 + 官方数据手册
+来源版本: RM0008 参考手册中文第10版（对应英文版 Rev 10） + DS5319 数据手册 Rev 20
+创建: 2026-09-02
 ---
 
 # STM32F103C8T6｜芯片资源与PinMux速查
