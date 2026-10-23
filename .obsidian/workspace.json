@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00_收件箱/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
+                "file": "求职方向与一年学习规划.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CMSIS-RTOS2函数速查表-STM32CubeMX版"
+              "title": "求职方向与一年学习规划"
             }
           }
         ]
@@ -205,6 +205,13 @@
   },
   "active": "f83cf1ee18ced549",
   "lastOpenFiles": [
+    "09_排坑/FreeRTOS_阶段一故障合集.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_索引.md",
+    "00_收件箱/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_任务管理与消息队列.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-23.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
+    "02_知识库/01_单片机MCU/FreeRTOS",
     "06_工具箱/知识库检查.py",
     "06_工具箱/知识库检查.sh",
     "08_归档/_旧版代码介绍/旧版_Key_介绍.md",
@@ -232,17 +239,10 @@
     "未命名.canvas",
     "未命名 1.canvas",
     "02_知识库/03_AI机器学习/铁球检测模型_2026电赛.md",
-    "未命名.base",
     "2026-09-30.md",
-    "00_收件箱/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
     "00_收件箱/使用说明.md",
     "首页.md",
     "01_项目/物联网终端项目/智能环境监测物联网终端-项目档卡.md",
-    "02_知识库/04_编程语言/环形缓冲区.md",
-    "02_知识库/01_单片机MCU/FreeRTOS_任务管理与消息队列.md",
-    "01_项目/物联网终端项目/项目选型对比.md",
-    "00_收件箱/智能环境监测物联网终端-项目档卡.md",
-    "01_项目/物联网终端项目/参考开源项目",
     "assets/Pasted image 20260823164128.png",
     "assets/Pasted image 20260823162506.png",
     "assets/Pasted image 20260823162435.png",
