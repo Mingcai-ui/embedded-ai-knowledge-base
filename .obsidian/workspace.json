@@ -11,14 +11,10 @@
             "id": "18378cdf42e15598",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "AI导航.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "AI导航"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
             }
           }
         ]
@@ -204,11 +200,13 @@
   },
   "active": "18378cdf42e15598",
   "lastOpenFiles": [
+    "AI导航.md",
+    "02_知识库/01_单片机MCU/STM32_定时器中断_Msp与中断链路.md",
+    "未命名.canvas",
     "00_收件箱/进度_2026-10-24_中断管理与临界区.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-24.md",
     "06_工具箱/EIDE_JLink_调试环境搭建.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_中断管理与临界区.md",
-    "AI导航.md",
     "AGENTS.md",
     "首页.md",
     "00_收件箱/来源_FreeRTOS中文手册清单.md",
@@ -244,8 +242,6 @@
     "08_归档/UART空闲中断实验/DMA方式/Src/stm32f1xx_it.c",
     "08_归档/UART空闲中断实验/DMA方式/Src/stm32f1xx_hal_msp.c",
     "09_排坑/FreeRTOS_阶段一故障合集.md",
-    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_索引.md",
-    "未命名.canvas",
     "未命名 1.canvas",
     "Pasted image 20260823164128.png",
     "Pasted image 20260823162506.png",

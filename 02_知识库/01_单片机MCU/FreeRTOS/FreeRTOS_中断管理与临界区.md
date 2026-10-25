@@ -11,78 +11,12 @@
 > **来源**：[[FreeRTOS_学习进度_2026-10-24]] 本轮（UART_Task 工程，2026-10-24~25 实测 + 十六题答辩校准）蒸馏；对应排坑见 [[FreeRTOS_阶段一故障合集]] 第 7~10 坑。
 > **能力档位：半懂** —— 机理已成文，部分结论经 AI 纠正 / 答辩校准；对照实验（实验 C~F）尚未做，边界未实测。
 
-## 1. TIM 中断链路：从配置到触发（缺的那一步）
+## 1. TIM 中断链路（摘要，全文已迁出）
 
-`MX_TIM1_Init()` 只写寄存器配置（PSC / ARR / NVIC），**不置 CR1.CEN，也不置 DIER.UIE**。
+> 全文（三要素 / MspInit 分工 / 唯一正确链路）已迁到裸机 HAL 笔记 [[STM32_定时器中断_Msp与中断链路]]——那部分属裸机 HAL 范畴，不是 FreeRTOS 专属。此处只留与本篇最相关的两条结论：
 
-中断真正生效需要三件事同时成立：
-
-| 条件 | 谁来置 | CubeMX 代码里有吗 |
-| --- | --- | --- |
-| NVIC 通道使能 | `HAL_NVIC_EnableIRQ()` | ✅ `HAL_TIM_Base_MspInit` 里有 |
-| 外设中断使能位 DIER | `__HAL_TIM_ENABLE_IT()` | ❌ 没有 |
-| 计数器启动 CR1.CEN | `__HAL_TIM_ENABLE()` | ❌ 没有 |
-
-所以必须补一行 `HAL_TIM_Base_Start_IT(&htim1);`。缺这一步的表现是：ISR 写对了、`extern` 写对了、回调写对了，但**中断永远不触发**。
-
-补充两条：
-
-- TIM1 是高级定时器，做**更新中断**不需要 MOE（`__HAL_TIM_ENABLE_MOE`），只有输出比较 / PWM 才要。
-- 周期公式：`T = (PSC+1) × (ARR+1) / 72MHz`。PSC=7199、ARR=9999 → 1s。ARR=65535 时是 6.55s，看着像"没反应"。
-
-### 1.1 `HAL_TIM_Base_MspInit` / `MspDeInit` 与 `MX_TIM1_Init` 的分工
-
-```c
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_base_handle)
-{
-  if(tim_base_handle->Instance==TIM1)
-  {
-    __HAL_RCC_TIM1_CLK_ENABLE();              // 外设时钟
-    HAL_NVIC_SetPriority(TIM1_UP_IRQn, 5, 0); // 抢占优先级 5，子优先级 0
-    HAL_NVIC_EnableIRQ(TIM1_UP_IRQn);         // 打开 NVIC 通道
-  }
-}
-
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_base_handle)
-{
-  if(tim_base_handle->Instance==TIM1)
-  {
-    __HAL_RCC_TIM1_CLK_DISABLE();             // 反初始化时关时钟（省电）
-    HAL_NVIC_DisableIRQ(TIM1_UP_IRQn);        // 关 NVIC 通道
-  }
-}
-```
-
-| 函数 | 管什么 | 谁调用 |
-| --- | --- | --- |
-| `MX_TIM1_Init()` | PSC / ARR / 计数模式 / 触发源（**定时器本体**） | `main()` 显式调用 |
-| `HAL_TIM_Base_MspInit()` | 时钟使能、NVIC 优先级与使能、DMA（**板级资源**） | HAL 在 `HAL_TIM_Base_Init()` 内部回调，看不到显式调用 |
-| `HAL_TIM_Base_MspDeInit()` | 关时钟、关 NVIC | `HAL_TIM_Base_DeInit()` 时回调 |
-
-三个要点：
-
-1. **`Msp` = MCU Support Package**。CubeMX 把"芯片无关的配置"和"芯片相关/板级相关"分开，Msp 是后者。
-2. **NVIC 使能在这里，不在 `MX_TIM1_Init` 里**。所谓"中断配置好了"，其实是 MspInit 干的。
-3. **按实例分流**（`if(tim_base_handle->Instance==TIM1)`），所以一个文件能同时服务 TIM1/TIM2/TIM3，加定时器不会互相覆盖。
-
-⚠️ 实践提醒：如果在 `USER CODE` 区自己重写一份 `HAL_TIM_Base_MspInit`，会和 CubeMX 生成的那份冲突（重复定义或只留自己的那份），**时钟和 NVIC 会全部失效**——表现和"忘了 Start_IT"一模一样。Msp 区一般不要碰。
-
-> 备注：MspInit 分工属于裸机 HAL 范畴，不是 FreeRTOS 专属；暂放本篇，若日后裸机中断笔记成篇再迁出。
-
-### 1.2 正确的中断链路只有一条（不要自己加第三层）
-
-```
-启动：   HAL_TIM_Base_Start_IT(&htim1)
-           └→ __HAL_TIM_ENABLE_IT(IT_UPDATE)  +  __HAL_TIM_ENABLE(CEN=1)
-
-中断：   TIM1_UP_IRQHandler()                 [stm32f1xx_it.c，CubeMX 管的]
-           └→ HAL_TIM_IRQHandler(&htim1)      [HAL 库，清标志 + 分发]
-                └→ HAL_TIM_PeriodElapsedCallback(htim)   [main.c，你写业务]
-```
-
-判断标准就一条：**业务代码只应出现在 `HAL_TIM_PeriodElapsedCallback` 里**。ISR 入口和分发都在库和 CubeMX 手里。
-
-教程陷阱（已踩过）：正点原子视频里的 `HAL_TIM_INT_IRQHandle()` 封装，在他的纯手写工程里成立（`stm32f1xx_it.c` 由他自己维护，调的是这个自造函数）；**在 CubeMX 工程里是废码**——`it.c` 已经 `TIM1_UP_IRQHandler() → HAL_TIM_IRQHandler(&htim1)` 直连，再补一层没有调用者。`HAL_TIM_INT_IRQHandle` 也不是 HAL 官方名字（官方只有带参数的 `HAL_TIM_IRQHandler`）。**教训：照抄教程代码前，先确认"教程的 `it.c` 是谁维护的"。**
+- 中断真正生效要三件事同时成立：NVIC 通道使能（MspInit 干的）+ DIER.UIE + CR1.CEN —— 后两者靠 `HAL_TIM_Base_Start_IT(&htim1)`，缺它**中断永远不触发**（第 7 坑）。
+- CubeMX 工程的中断入口已直连 `TIM1_UP_IRQHandler() → HAL_TIM_IRQHandler() → HAL_TIM_PeriodElapsedCallback()`，不要自己加第三层（`HAL_TIM_INT_IRQHandle` 式封装在 CubeMX 工程里是废码）。
 
 ## 2. "关中断"有四个层级，作用范围完全不同
 
@@ -189,6 +123,7 @@ HAL_Delay 等 uwTick 变量
 
 ## 相关链接
 
+- [[STM32_定时器中断_Msp与中断链路]] — 裸机 HAL：TIM 中断链路与 MspInit 分工（本篇 §1 全文迁出处）
 - [[FreeRTOS_索引]] — 目录入口
 - [[FreeRTOS_学习进度_2026-10-24]] — 本轮能力判定、答辩记录、下一步
 - [[FreeRTOS_阶段一故障合集]] — 第 7~10 坑（本轮四个真实故障）
