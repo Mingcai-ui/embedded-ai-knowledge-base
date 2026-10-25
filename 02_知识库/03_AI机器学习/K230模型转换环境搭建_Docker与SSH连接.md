@@ -26,7 +26,7 @@ K230 模型转换（`.onnx` → `.kmodel`）依赖官方提供的 **`k230_model_
    ```bash
    wsl --list
    ```
-   未安装时为空列表。![[Pasted image 20260823160651.png]]
+   未安装时为空列表。![[WSL 安装 Ubuntu.png]]
 
 2. **查看可安装版本列表**
    ```bash
@@ -48,7 +48,7 @@ K230 模型转换（`.onnx` → `.kmodel`）依赖官方提供的 **`k230_model_
 
 > 进入 Ubuntu 后，若终端不是 Ubuntu 环境（确保终端如下图状态），先运行 `wsl` 再 `cd` 回到 home。
 >
-> ![[Pasted image 20260823162435.png]]
+> ![[Docker 安装（阿里云镜像源）.png]]
 
 ### 2.1 基础安装
 
@@ -124,7 +124,7 @@ cp /mnt/H/Projects/K230/yolo/k230_model_converter.tar .
 docker load -i k230_model_converter.tar
 ```
 
-此时 `docker images` 应显示 `k230_model_converter:2.0`，即加载成功。![[Pasted image 20260823164128.png]]
+此时 `docker images` 应显示 `k230_model_converter:2.0`，即加载成功。![[加载 k230_model_converter 镜像.png]]
 
 ### 镜像内部环境（转换工具链，L1 一手证据）
 
@@ -188,7 +188,7 @@ sudo apt install net-tools
 ifconfig
 ```
 
-![[1ab9a67d34b98fe62d26ede4d868b3f4.png]]
+![[退出容器 + 查看 IP.png]]
 
 ---
 

@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "027cc3ddcf68ffec",
+        "id": "97b9bff747014454",
         "type": "tabs",
         "children": [
           {
-            "id": "f83cf1ee18ced549",
+            "id": "18378cdf42e15598",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "求职方向与一年学习规划.md",
+                "file": "00_收件箱/进度_2026-10-24_中断管理与临界区.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "求职方向与一年学习规划"
+              "title": "进度_2026-10-24_中断管理与临界区"
             }
           }
         ]
@@ -55,7 +55,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "osThreadGetState",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -79,8 +79,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -203,8 +202,35 @@
       "omnisearch:Omnisearch": false
     }
   },
-  "active": "f83cf1ee18ced549",
+  "active": "18378cdf42e15598",
   "lastOpenFiles": [
+    "AI导航.md",
+    "AGENTS.md",
+    "首页.md",
+    "00_收件箱/来源_FreeRTOS中文手册清单.md",
+    "00_收件箱/进度_2026-10-24_中断管理与临界区.md",
+    "01_项目/2026_Modbus边缘采集网关/核心一_ModbusRTU协议栈与多机轮询-档卡.md",
+    "01_项目/2026_Modbus边缘采集网关/Modbus边缘采集网关-主档卡.md",
+    "01_项目/2026_Modbus边缘采集网关/核心二_零丢帧采集与离线缓存-档卡.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
+    "03_开发板芯片/TPS54627/TPS54627-芯片资源与引脚速查.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_任务管理与消息队列.md",
+    "求职方向与一年学习规划.md",
+    "00_收件箱/使用说明.md",
+    "assets/Docker 安装（阿里云镜像源）.png",
+    "02_知识库/05_硬件电路/PCB设计规则与注意事项.md",
+    "嵌入式学习路线.md",
+    "未命名 1.base",
+    "02_知识库/03_AI机器学习/K230模型转换环境搭建_Docker与SSH连接.md",
+    "assets/Pasted image 20260823161211.png",
+    "assets/加载 k230_model_converter 镜像.png",
+    "assets/退出容器 + 查看 IP.png",
+    "assets/WSL 安装 Ubuntu.png",
+    "02_知识库/03_AI机器学习/K230_YOLO训练转换与部署.md",
+    "02_知识库/03_AI机器学习/K230_nncase图像分类部署.md",
+    "03_开发板芯片/STM32F103C8T6-芯片资源与PinMux速查.md",
+    "06_工具箱/来源_STM32CubeMX版本发布说明.md",
+    "Excalidraw/Drawing 2026-09-17 16.13.23.excalidraw.md",
     "seda0ZWK1",
     "02_知识库/06_通信协议/sedTMmZxb",
     "08_归档/UART空闲中断实验/DMA方式/Startup/startup_stm32f103c8tx.s",
@@ -214,41 +240,13 @@
     "08_归档/UART空闲中断实验/DMA方式/Src/syscalls.c",
     "08_归档/UART空闲中断实验/DMA方式/Src/stm32f1xx_it.c",
     "08_归档/UART空闲中断实验/DMA方式/Src/stm32f1xx_hal_msp.c",
-    "08_归档/UART空闲中断实验/DMA方式/Src/OLED_Data.c",
-    "08_归档/UART空闲中断实验/DMA方式/Src/OLED.c",
     "09_排坑/FreeRTOS_阶段一故障合集.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_索引.md",
     "00_收件箱/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
-    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_任务管理与消息队列.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-23.md",
-    "02_知识库/01_单片机MCU/FreeRTOS/CMSIS-RTOS2函数速查表-STM32CubeMX版.md",
     "08_归档/_旧版代码介绍/旧版_Key_介绍.md",
-    "08_归档/_旧版代码介绍/旧版_Buzzer_介绍.md",
-    "08_归档/_旧版代码介绍/旧版_LED_介绍.md",
-    "02_知识库/06_通信协议/UART空闲中断接收不定长数据_IT与DMA双方案.md",
-    "00_收件箱/FreeRTOS学习进度记录-2026-10-23.md",
-    "求职方向与一年学习规划.md",
-    "嵌入式学习路线.md",
-    "01_项目/2026_Modbus边缘采集网关/Modbus边缘采集网关-主档卡.md",
-    "01_项目/2026_Modbus边缘采集网关/核心二_零丢帧采集与离线缓存-档卡.md",
-    "01_项目/2026_Modbus边缘采集网关/核心一_ModbusRTU协议栈与多机轮询-档卡.md",
-    "01_项目/2026_Modbus边缘采集网关/采购清单.md",
-    "02_知识库/03_AI机器学习/K230_YOLO训练转换与部署.md",
-    "02_知识库/03_AI机器学习/K230_nncase图像分类部署.md",
-    "AI导航.md",
-    "AGENTS.md",
     "未命名.canvas",
     "未命名 1.canvas",
-    "02_知识库/03_AI机器学习/铁球检测模型_2026电赛.md",
-    "2026-09-30.md",
-    "00_收件箱/使用说明.md",
-    "首页.md",
-    "assets/Pasted image 20260823164128.png",
-    "assets/Pasted image 20260823162506.png",
-    "assets/Pasted image 20260823162435.png",
-    "assets/Pasted image 20260823161211.png",
-    "assets/Pasted image 20260823160651.png",
-    "assets/1ab9a67d34b98fe62d26ede4d868b3f4.png",
     "Pasted image 20260823164128.png",
     "Pasted image 20260823162506.png",
     "Pasted image 20260823162435.png",
