@@ -979,36 +979,36 @@ void MX_FREERTOS_Init(void)
 
 ### 11.3 通信与同步
 
-| 功能 | CMSIS-RTOS2 | 原生 FreeRTOS |
-|---|---|---|
-| 二值信号量创建 | `osSemaphoreNew(1, 0, NULL)` | `xSemaphoreCreateBinary()` |
-| 计数信号量创建 | `osSemaphoreNew(max, init, NULL)` | `xSemaphoreCreateCounting(max, init)` |
-| 获取信号量 | `osSemaphoreAcquire(id, timeout)` | `xSemaphoreTake()`（ISR：`xSemaphoreTakeFromISR()`） |
-| 释放信号量 | `osSemaphoreRelease(id)` | `xSemaphoreGive()`（ISR：`xSemaphoreGiveFromISR()`） |
-| 信号量计数 | `osSemaphoreGetCount()` | `uxSemaphoreGetCount()` |
-| 互斥量创建 | `osMutexNew(&attr)` | `xSemaphoreCreateMutex()` |
-| 递归互斥量 | `osMutexNew(&attr)` 且 `attr_bits` 含 `osMutexRecursive` | `xSemaphoreCreateRecursiveMutex()` |
-| 上锁 | `osMutexAcquire(id, timeout)` | `xSemaphoreTake()` / `xSemaphoreTakeRecursive()` |
-| 解锁 | `osMutexRelease(id)` | `xSemaphoreGive()` / `xSemaphoreGiveRecursive()` |
-| 互斥量持有者 | `osMutexGetOwner()` | `xSemaphoreGetMutexHolder()` |
-| 队列创建 | `osMessageQueueNew(count, size, NULL)` | `xQueueCreate(len, item_size)` |
-| 入队 | `osMessageQueuePut(id, ptr, prio, timeout)` | `xQueueSend()` / `xQueueSendToBack()`（ISR：`xQueueSendFromISR()`） |
-| 出队 | `osMessageQueueGet(id, ptr, prio, timeout)` | `xQueueReceive()`（ISR：`xQueueReceiveFromISR()`） |
-| 预览不移除 | 无 | `xQueuePeek()` |
-| 清空队列 | `osMessageQueueReset()` | `xQueueReset()` |
-| 已排队数 | `osMessageQueueGetCount()` | `uxQueueMessagesWaiting()` |
-| 剩余空位 | `osMessageQueueGetSpace()` | `uxQueueSpacesAvailable()` |
-| 事件标志创建 | `osEventFlagsNew(NULL)` | `xEventGroupCreate()` |
-| 置位 | `osEventFlagsSet(id, flags)` | `xEventGroupSetBits()`（ISR：`xEventGroupSetBitsFromISR()`） |
-| 清位 | `osEventFlagsClear(id, flags)` | `xEventGroupClearBits()` |
-| 读取 | `osEventFlagsGet(id)` | `xEventGroupGetBits()` |
-| 等待 | `osEventFlagsWait(id, f, opt, to)` | `xEventGroupWaitBits()` |
-| 多任务同步点 | 无（可组合实现） | `xEventGroupSync()` |
-| 定时器创建 | `osTimerNew(func, type, arg, NULL)` | `xTimerCreate(...)` |
-| 启动/停止/删除 | `osTimerStart/Stop/Delete()` | `xTimerStart/Stop/Delete()`（ISR：`xTimerStartFromISR()` 等） |
-| 定时器在跑? | `osTimerIsRunning()` | `xTimerIsTimerActive()` |
-| 内存池 | `osMemoryPoolNew/Alloc/Free` | 无直接对应（用 `pvPortMalloc`/`vPortFree` 或自定义） |
-| 邮箱（Mailbox） | 无（用内存池 + 队列组合） | 长度 1 的队列 + `xQueueOverwrite()` |
+| 功能          | CMSIS-RTOS2                                            | 原生 FreeRTOS                                                      |
+| ----------- | ------------------------------------------------------ | ---------------------------------------------------------------- |
+| 二值信号量创建     | `osSemaphoreNew(1, 0, NULL)`                           | `xSemaphoreCreateBinary()`                                       |
+| 计数信号量创建     | `osSemaphoreNew(max, init, NULL)`                      | `xSemaphoreCreateCounting(max, init)`                            |
+| 获取信号量       | `osSemaphoreAcquire(id, timeout)`                      | `xSemaphoreTake()`（ISR：`xSemaphoreTakeFromISR()`）                |
+| 释放信号量       | `osSemaphoreRelease(id)`                               | `xSemaphoreGive()`（ISR：`xSemaphoreGiveFromISR()`）                |
+| 信号量计数       | `osSemaphoreGetCount()`                                | `uxSemaphoreGetCount()`                                          |
+| 互斥量创建       | `osMutexNew(&attr)`                                    | `xSemaphoreCreateMutex()`                                        |
+| 递归互斥量       | `osMutexNew(&attr)` 且 `attr_bits` 含 `osMutexRecursive` | `xSemaphoreCreateRecursiveMutex()`                               |
+| 上锁          | `osMutexAcquire(id, timeout)`                          | `xSemaphoreTake()` / `xSemaphoreTakeRecursive()`                 |
+| 解锁          | `osMutexRelease(id)`                                   | `xSemaphoreGive()` / `xSemaphoreGiveRecursive()`                 |
+| 互斥量持有者      | `osMutexGetOwner()`                                    | `xSemaphoreGetMutexHolder()`                                     |
+| 队列创建        | `osMessageQueueNew(count, size, NULL)`                 | `xQueueCreate(len, item_size)`                                   |
+| 入队          | `osMessageQueuePut(id, ptr, prio, timeout)`            | `xQueueSend()` / `xQueueSendToBack()`（ISR：`xQueueSendFromISR()`） |
+| 出队          | `osMessageQueueGet(id, ptr, prio, timeout)`            | `xQueueReceive()`（ISR：`xQueueReceiveFromISR()`）                  |
+| 预览不移除       | 无                                                      | `xQueuePeek()`                                                   |
+| 清空队列        | `osMessageQueueReset()`                                | `xQueueReset()`                                                  |
+| 已排队数        | `osMessageQueueGetCount()`                             | `uxQueueMessagesWaiting()`                                       |
+| 剩余空位        | `osMessageQueueGetSpace()`                             | `uxQueueSpacesAvailable()`                                       |
+| 事件标志创建      | `osEventFlagsNew(NULL)`                                | `xEventGroupCreate()`                                            |
+| 置位          | `osEventFlagsSet(id, flags)`                           | `xEventGroupSetBits()`（ISR：`xEventGroupSetBitsFromISR()`）        |
+| 清位          | `osEventFlagsClear(id, flags)`                         | `xEventGroupClearBits()`                                         |
+| 读取          | `osEventFlagsGet(id)`                                  | `xEventGroupGetBits()`                                           |
+| 等待          | `osEventFlagsWait(id, f, opt, to)`                     | `xEventGroupWaitBits()`                                          |
+| 多任务同步点      | 无（可组合实现）                                               | `xEventGroupSync()`                                              |
+| 定时器创建       | `osTimerNew(func, type, arg, NULL)`                    | `xTimerCreate(...)`                                              |
+| 启动/停止/删除    | `osTimerStart/Stop/Delete()`                           | `xTimerStart/Stop/Delete()`（ISR：`xTimerStartFromISR()` 等）        |
+| 定时器在跑?      | `osTimerIsRunning()`                                   | `xTimerIsTimerActive()`                                          |
+| 内存池         | `osMemoryPoolNew/Alloc/Free`                           | 无直接对应（用 `pvPortMalloc`/`vPortFree` 或自定义）                         |
+| 邮箱（Mailbox） | 无（用内存池 + 队列组合）                                         | 长度 1 的队列 + `xQueueOverwrite()`                                   |
 
 ### 11.4 三个必须牢记的差异
 
