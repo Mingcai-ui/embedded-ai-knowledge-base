@@ -204,6 +204,8 @@
   },
   "active": "18378cdf42e15598",
   "lastOpenFiles": [
+    "00_收件箱/进度_2026-11-01_FreeRTOS摸底.md",
+    "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-25_调度器挂起与恢复.md",
     "00_收件箱/进度_2026-10-25_调度器挂起与恢复.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-23.md",
     "02_知识库/01_单片机MCU/FreeRTOS/FreeRTOS_学习进度_2026-10-24.md",
@@ -233,9 +235,7 @@
     "01_项目/2027_低功耗LoRa无线采集节点/低功耗LoRa无线采集节点-主档卡.md.tmp.34284.1793107287153",
     "01_项目/2027_低功耗LoRa无线采集节点",
     "03_开发板芯片/STM32F103C8T6-芯片资源与PinMux速查.md",
-    "03_开发板芯片/STM32F103C8T6.md",
     "08_归档/ST官方参考资料/用户使用手册.pdf",
-    "06_工具箱/来源_STM32CubeMX版本发布说明.md",
     "assets/Docker 安装（阿里云镜像源）.png",
     "assets/Pasted image 20260823161211.png",
     "assets/加载 k230_model_converter 镜像.png",
