@@ -14,7 +14,7 @@ from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKIP_DIRS = {".git", ".workbuddy", ".trae", ".obsidian"}
-TYPES = {"项目", "知识", "板卡", "来源", "排坑", "竞赛", "课程", "工具", "代码", "索引", "个人档案"}
+TYPES = {"项目", "知识", "板卡", "来源", "排坑", "竞赛", "课程", "工具", "代码", "索引", "个人档案", "进度", "清单"}
 STATES = {"进行中", "已完成", "归档"}
 LINK_EXTS = {".md", ".c", ".h", ".png", ".jpg", ".jpeg", ".xlsx", ".kmodel", ".pdf", ".svg"}
 
