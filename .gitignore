@@ -1,0 +1,25 @@
+# Obsidian 运行时状态（随机器变化，不入库）
+.obsidian/workspace*.json
+.obsidian/cache/
+.obsidian/workspace-mobile.json
+
+# AI 工具本地目录
+.trae/
+.workbuddy/
+
+# 操作系统与临时文件
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+*.bak
+*~
+~$*
+*.crdownload
+
+# 临时导出（Obsidian 导出的 html/pdf 草稿）
+*.export.md
+*.export.html
+
+# 嵌套独立 Git 仓库：完整源码已单独托管于 jiangkeda-embedded-review
+08_归档/可移植模块代码/
