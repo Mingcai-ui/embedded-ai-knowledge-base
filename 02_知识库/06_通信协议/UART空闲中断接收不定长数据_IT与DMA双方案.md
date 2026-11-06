@@ -146,9 +146,23 @@ DMA 初始化要点（`usart.c` 的 `HAL_UART_MspInit`）：接收通道 `PERIPH
 
 | 差异点 | 本文第 4/5 节（内联版） | 归档模块版 | 判断 |
 |---|---|---|---|
-| printf 重定向 | 方案 A 写 `__io_putchar(int ch)` 逐字符 | 统一用 `_write(int file, char *ptr, int len)` 按块 | `_write` 是 newlib 的 `write()` 系统桩，一次能发整段，**少一层循环，推荐** |
+| printf 重定向 | 方案 A 写 `__io_putchar(int ch)` 逐字符 | 统一用 `_write(int file, char *ptr, int len)` 按块 | **这不是风格差异，是工具链差异**（见 7.1.1） |
 | DMA 回显的源缓冲 | 直接 `HAL_UART_Transmit_DMA(&huart1, rxData, Size)` | 先 `memcpy(txData, rxData, Size)` 再发 `txData` | **模块版更稳**：发送是异步的，发 `rxData` 期间若重装接收，新数据会覆盖正在发送的旧数据 → 回显内容错乱 |
 | 接收缓冲定义位置 | 在 `main.c` 里定义 | 定义在 `.h` 里 | ⚠️ 有隐患，见 7.3 |
+
+### 7.1.1 `__io_putchar` 还是 `_write`？由工具链决定，不是二选一
+
+这两者管的是**同一件事**（把 `printf` 的字符送到串口），但挂在**不同的 C 运行库**上。选错的那个会被链接器**静默忽略**——不报错，只是 `printf` 没输出。
+
+| 工具链 | 运行库 | 正确的重定向点 | 备注 |
+|---|---|---|---|
+| Keil MDK | MicroLIB | `int __io_putchar(int ch)` | CubeMX 生成的 `main.c` 默认就带这个空实现，取消注释即可 |
+| Keil MDK | 标准 C 库（未勾 MicroLIB） | `int fputc(int ch, FILE *f)` | 需要 `#include <stdio.h>` |
+| GCC（EIDE / VS Code / STM32CubeIDE） | newlib | `int _write(int file, char *ptr, int len)` | newlib 的 `write()` 系统桩，`syscalls.c` 里有 `__attribute__((weak))` 空实现 |
+
+判断方法：**编译用的是 `armcc`/`armclang`（MDK）还是 `arm-none-eabi-gcc`**。本项目用 EIDE + GCC，所以归档版统一写 `_write` 是对的；笔记第 4 节当初抄的 `__io_putchar` 是 MDK 路线，在 GCC 下不会生效。
+
+> 另一个容易混的点：`_write` 一次收到一整段（`len` 个字节），`__io_putchar` 每次只来 1 个字符。所以 `_write` 里可以直接把 `ptr/len` 丢给 `HAL_UART_Transmit`，而 `__io_putchar` 只能在里面发 1 字节。
 
 ### 7.2 两个模块不能同时编译进同一个工程
 
