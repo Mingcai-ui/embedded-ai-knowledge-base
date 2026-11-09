@@ -22,7 +22,7 @@ STATES = {"进行中", "已完成", "归档"}
 LINK_EXTS = {".md", ".c", ".h", ".png", ".jpg", ".jpeg", ".xlsx", ".kmodel", ".pdf", ".svg"}
 
 # 模板 / 入口文件不参与 frontmatter 检查
-FM_EXEMPT = {"AGENTS.md", "README.md", "AI导航.md"}
+FM_EXEMPT = {"AGENTS.md", "README.md", "AI导航.md", "知识库上手指南_给师弟.md"}  # 末项为对外分享文档（AI导航 2.3）
 FM_EXEMPT_PREFIX = ("07_模板/", "07_模板\\", ".trae/")
 
 LINK_RE = re.compile(r"\[\[([^\]\|#]+)")
@@ -35,6 +35,8 @@ CHAT_WORDS = ["如上所述", "上文", "刚才", "前面提到", "我们之前"
               "对话中", "聊天记录", "希望对你有帮助"]
 # 进行中超过该天数视为停滞，周归档时应关闭或拆分
 STALE_DAYS = 60
+# 永久维护的活文档不参与停滞检查（索引/规则文件）
+STALE_EXEMPT = {"首页.md", "00_收件箱/使用说明.md"}
 # 知识 / 排坑类正文少于该非空行数视为空壳
 STUB_LINES = 10
 # 内容质量检查跳过模板与已归档内容
@@ -165,14 +167,18 @@ def main():
             raw = fh.read()
         fm, body_start = parse_frontmatter(raw)
 
-        hits = [w for w in CHAT_WORDS if w in strip_code(raw)]
+        hits = set()
+        for line in strip_code(raw).splitlines():
+            if "禁止" in line or "不许" in line:  # 红线规则引用这些词作示例，不算对话腔
+                continue
+            hits.update(w for w in CHAT_WORDS if w in line)
         if hits:
-            print(f"  ! {rel} -> 对话腔残留 {hits}")
+            print(f"  ! {rel} -> 对话腔残留 {sorted(hits)}")
             warn += 1
         if fm.get("标签") == "[]":
             print(f"  ! {rel} -> 空标签")
             warn += 1
-        if fm.get("状态") == "进行中" and fm.get("创建"):
+        if fm.get("状态") == "进行中" and fm.get("创建") and rel not in STALE_EXEMPT and fm.get("类型") != "索引":
             try:
                 created = datetime.datetime.strptime(fm["创建"], "%Y-%m-%d").date()
                 age = (today - created).days
