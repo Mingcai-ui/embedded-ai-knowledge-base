@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-知识库健康检查（断链 / frontmatter / 同名冲突）
+知识库健康检查（断链 / frontmatter / 同名冲突 / 内容质量）
 
 用法（在知识库根目录）：
     python 06_工具箱/知识库检查.py
 
 契约依据：AI导航.md 第 2 节（frontmatter）、第 5 节（链接规范）
+【1】~【3】为结构检查，计入退出码；【4】为内容质量建议项（对话腔 /
+空标签 / 停滞笔记 / 空壳笔记），只提示不计入退出码。
 """
+import datetime
 import os
 import re
 import sys
@@ -26,6 +29,16 @@ LINK_RE = re.compile(r"\[\[([^\]\|#]+)")
 FENCE_RE = re.compile(r"^\s*```")
 INLINE_CODE_RE = re.compile(r"`[^`]*`")
 FM_KEY_RE = re.compile(r"^([\u4e00-\u9fa5A-Za-z_]+):")
+
+# 【4】内容质量：对话腔关键词（笔记必须脱离对话上下文可独立阅读）
+CHAT_WORDS = ["如上所述", "上文", "刚才", "前面提到", "我们之前", "你提到",
+              "对话中", "聊天记录", "希望对你有帮助"]
+# 进行中超过该天数视为停滞，周归档时应关闭或拆分
+STALE_DAYS = 60
+# 知识 / 排坑类正文少于该非空行数视为空壳
+STUB_LINES = 10
+# 内容质量检查跳过模板与已归档内容
+QUALITY_SKIP_PREFIX = ("07_模板/", "08_归档/")
 
 
 def iter_files():
@@ -51,6 +64,21 @@ def strip_code(text):
             continue
         out.append(INLINE_CODE_RE.sub("", line))
     return "\n".join(out)
+
+
+def parse_frontmatter(raw):
+    """返回 (frontmatter 字典, 正文起始行号)。无 frontmatter 时返回 ({}, 0)。"""
+    lines = raw.splitlines()
+    fm = {}
+    if not lines or lines[0].strip() != "---":
+        return fm, 0
+    for i, line in enumerate(lines[1:], start=1):
+        if line.strip() == "---":
+            return fm, i + 1
+        m = FM_KEY_RE.match(line)
+        if m:
+            fm[m.group(1)] = line.split(":", 1)[1].strip()
+    return fm, 0
 
 
 def main():
@@ -125,6 +153,40 @@ def main():
     else:
         for k, v in sorted(dups.items()):
             print(f"  x {k}: " + " | ".join(v))
+    print()
+    # ---------- 4. 内容质量（建议项，不计入退出码） ----------
+    print("【4】内容质量（建议项）")
+    warn = 0
+    today = datetime.date.today()
+    for rel in md_files:
+        if rel.startswith(QUALITY_SKIP_PREFIX):
+            continue
+        with open(os.path.join(ROOT, rel), encoding="utf-8", errors="ignore") as fh:
+            raw = fh.read()
+        fm, body_start = parse_frontmatter(raw)
+
+        hits = [w for w in CHAT_WORDS if w in strip_code(raw)]
+        if hits:
+            print(f"  ! {rel} -> 对话腔残留 {hits}")
+            warn += 1
+        if fm.get("标签") == "[]":
+            print(f"  ! {rel} -> 空标签")
+            warn += 1
+        if fm.get("状态") == "进行中" and fm.get("创建"):
+            try:
+                created = datetime.datetime.strptime(fm["创建"], "%Y-%m-%d").date()
+                age = (today - created).days
+                if age > STALE_DAYS:
+                    print(f"  ! {rel} -> 进行中已 {age} 天，周归档时关闭或拆分")
+                    warn += 1
+            except ValueError:
+                pass
+        if fm.get("类型") in ("知识", "排坑"):
+            body_lines = sum(1 for line in raw.splitlines()[body_start:] if line.strip())
+            if body_lines < STUB_LINES:
+                print(f"  ! {rel} -> 正文仅 {body_lines} 行，疑似空壳")
+                warn += 1
+    print("  OK 无腐化迹象" if warn == 0 else f"  共 {warn} 处建议（不计入退出码）")
     print()
     print("检查完成。")
     return 1 if (broken or bad or dups) else 0
