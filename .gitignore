@@ -2,6 +2,7 @@
 .obsidian/workspace*.json
 .obsidian/cache/
 .obsidian/workspace-mobile.json
+.obsidian/graph.json
 
 # AI 工具本地目录
 .trae/
